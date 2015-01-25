@@ -28,6 +28,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class PlacesActivity extends Activity {
 
@@ -35,6 +36,7 @@ public class PlacesActivity extends Activity {
 	Double longitude;
 	String API_KEY = "AIzaSyBykTAg2sn0gDnazQrli6EN_Ffq4k6d7aM";
 	String Search;
+	GoogleMap map;
 	private static final String TAG = PlacesActivity.class.getSimpleName();
 
 	@Override
@@ -45,6 +47,8 @@ public class PlacesActivity extends Activity {
 		Search = getIntent().getStringExtra("searchText");
 
 		showMap();
+		MapSearch ms = new MapSearch();
+		ms.execute();
 	}
 
 	private void showMap() {
@@ -52,7 +56,7 @@ public class PlacesActivity extends Activity {
 		if (cm != null) {
 			NetworkInfo nf = cm.getActiveNetworkInfo();
 			if (nf != null && nf.isConnected()) {
-				GoogleMap map = ((MapFragment) getFragmentManager()
+				map = ((MapFragment) getFragmentManager()
 						.findFragmentById(R.id.map)).getMap();
 
 				map.setMyLocationEnabled(true);
@@ -96,13 +100,13 @@ public class PlacesActivity extends Activity {
 			try {
 				// connecting to a URL
 				StringBuilder urlString = new StringBuilder(
-						"https://maps.googleapis.com/maps/api/place/search/json");
+						"https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
 
-				urlString.append("?type=" + Search);
-				urlString.append("&location=" + Double.toString(latitude) + ","
+				urlString.append("location=" + Double.toString(latitude) + ","
 						+ Double.toString(longitude));
 				urlString.append("&radius=5000");
-				urlString.append("&sensor=false&key=" + API_KEY);
+				urlString.append("&type=" + Search);
+				urlString.append("&sensor=true&key=" + API_KEY);
 
 				URL searchurl = new URL(urlString.toString());
 				HttpURLConnection connection = (HttpURLConnection) searchurl
@@ -121,7 +125,18 @@ public class PlacesActivity extends Activity {
 					String ReasponseData = new String(charArray);
 
 					jsonresponse = new JSONObject(ReasponseData);
-					JSONArray jsonPosts = jsonresponse.getJSONArray("results");
+					JSONArray jsonSearchs = jsonresponse.getJSONArray("results");
+					for(int i=0;i<jsonSearchs.length();i++)
+					{
+						JSONObject jsonSr = jsonSearchs.getJSONObject(i);
+						JSONObject js = jsonSr.getJSONObject("geometry");
+						JSONObject js1 = js.getJSONObject("location");
+						Double lat = js1.getDouble("lat");
+						Double lng = js1.getDouble("lng");
+						
+						map.addMarker(new MarkerOptions()
+						.position(new LatLng(lat, lng)));
+					}
 				} else {
 					Log.i(TAG, "unsuccessful HTTP Response code: "
 							+ responseCode);
