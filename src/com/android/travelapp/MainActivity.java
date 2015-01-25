@@ -37,8 +37,7 @@ public class MainActivity extends ActionBarActivity {
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
 				// TODO Auto-generated method stub
-				Intent intent;
-				intent = new Intent(MainActivity.this, PlacesActivity.class);
+				Intent intent = new Intent(MainActivity.this, PlacesActivity.class);
 				
 				switch (position) {
 				case 1:
