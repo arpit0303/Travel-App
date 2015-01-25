@@ -38,22 +38,19 @@ public class MainActivity extends ActionBarActivity {
 					int position, long id) {
 				// TODO Auto-generated method stub
 				Intent intent = new Intent(MainActivity.this, PlacesActivity.class);
+				intent.putExtra("searchText",places.getSelectedItem().toString());
 				
 				switch (position) {
 				case 1:
-					intent.putExtra("mounments",places.getSelectedItem().toString());
 					startActivity(intent);
 					break;
 				case 2:
-					intent.putExtra("hotels",places.getSelectedItem().toString());
 					startActivity(intent);
 					break;
 				case 3:
-					intent.putExtra("restaurants",places.getSelectedItem().toString());
 					startActivity(intent);
 					break;
 				case 4:
-					intent.putExtra("restaurants",places.getSelectedItem().toString());
 					startActivity(intent);
 					break;
 
