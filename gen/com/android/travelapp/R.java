@@ -2035,7 +2035,6 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f0b003f;
         public static final int action_mode_bar_stub=0x7f0b003e;
         public static final int action_mode_close_button=0x7f0b0031;
-        public static final int action_settings=0x7f0b0053;
         public static final int activity_chooser_view_content=0x7f0b0032;
         public static final int always=0x7f0b0025;
         public static final int beginning=0x7f0b002c;
@@ -2160,10 +2159,6 @@ containing a value of this type.
         public static final int activity_main=0x7f030017;
         public static final int activity_places=0x7f030018;
         public static final int support_simple_spinner_dropdown_item=0x7f030019;
-    }
-    public static final class menu {
-        public static final int main=0x7f0d0000;
-        public static final int places=0x7f0d0001;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -2328,6 +2323,8 @@ containing a value of this type.
         public static final int create_calendar_message=0x7f060005;
         public static final int create_calendar_title=0x7f060004;
         public static final int decline=0x7f060003;
+        public static final int error_no_internet_connection=0x7f060039;
+        public static final int error_no_network=0x7f06003a;
         public static final int hello_world=0x7f060034;
         public static final int store_picture_message=0x7f060001;
         public static final int store_picture_title=0x7f060000;

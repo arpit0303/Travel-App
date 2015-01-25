@@ -18,4 +18,8 @@
 
     <string name="choose_your_destination">Choose Your Destination</string>
 
+    <string name="error_no_internet_connection">Oops!! There is no Internet connection.</string>
+
+    <string name="error_no_network">Oops!! There is no network.</string>
+
 </resources>
