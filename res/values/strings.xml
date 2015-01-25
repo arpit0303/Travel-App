@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Travel App</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="wants_to_visit">Wants to visit</string>
+
+    <string-array name="places">
+        <item>Choose Your Destination</item>
+        <item>Historical Monuments</item>
+        <item>Hotels</item>
+        <item>Restaurants</item>
+        <item>Entertainment</item>
+    </string-array>
+
+    <string name="title_activity_places">Places</string>
+
+    <string name="choose_your_destination">Choose Your Destination</string>
+
+</resources>
