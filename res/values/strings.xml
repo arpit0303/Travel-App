@@ -12,6 +12,7 @@
         <item>Hotels</item>
         <item>Restaurants</item>
         <item>Entertainment</item>
+        <item>cafe</item>
     </string-array>
 
     <string name="title_activity_places">Places</string>

@@ -9,6 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
@@ -20,6 +21,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -34,9 +37,10 @@ public class PlacesActivity extends Activity {
 
 	Double latitude;
 	Double longitude;
-	String API_KEY = "AIzaSyBykTAg2sn0gDnazQrli6EN_Ffq4k6d7aM";
+	String API_KEY = "AIzaSyBQF4rZXj02aXN2TCRtC7KP1Tb9BITMURs";
 	String Search;
 	GoogleMap map;
+	StringBuilder urlString;
 	private static final String TAG = PlacesActivity.class.getSimpleName();
 
 	@Override
@@ -47,6 +51,30 @@ public class PlacesActivity extends Activity {
 		Search = getIntent().getStringExtra("searchText");
 
 		showMap();
+		
+		urlString = new StringBuilder(
+				"https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+
+		urlString.append("location=" + Double.toString(latitude) + ","
+				+ Double.toString(longitude));
+		urlString.append("&radius=5000");
+		urlString.append("&type=" + Search);
+		urlString.append("&sensor=true&key=" + API_KEY); 
+		
+		Handler handler = new Handler(Looper.getMainLooper());
+	    handler.post(
+	        new Runnable()
+	        {
+	            @Override
+	            public void run()
+	            {
+	            	Toast.makeText(PlacesActivity.this, urlString.toString(), Toast.LENGTH_LONG).show();
+	            }
+	        }
+	    );
+		
+		
+		
 		MapSearch ms = new MapSearch();
 		ms.execute();
 	}
@@ -91,23 +119,15 @@ public class PlacesActivity extends Activity {
 		}
 	}
 
-	public class MapSearch extends AsyncTask<Void, Void, Void> {
+	public class MapSearch extends AsyncTask<Void, Void, JSONObject> {
 
 		@Override
-		protected Void doInBackground(Void... params) {
+		protected JSONObject doInBackground(Void... params) {
 			int responseCode = -1;
 			JSONObject jsonresponse = null;
 			try {
 				// connecting to a URL
-				StringBuilder urlString = new StringBuilder(
-						"https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
-
-				urlString.append("location=" + Double.toString(latitude) + ","
-						+ Double.toString(longitude));
-				urlString.append("&radius=5000");
-				urlString.append("&type=" + Search);
-				urlString.append("&sensor=true&key=" + API_KEY);
-
+				
 				URL searchurl = new URL(urlString.toString());
 				HttpURLConnection connection = (HttpURLConnection) searchurl
 						.openConnection();
@@ -115,8 +135,9 @@ public class PlacesActivity extends Activity {
 
 				// Get the response code which said connection is done or not
 				responseCode = connection.getResponseCode();
-
+				
 				if (responseCode == HttpURLConnection.HTTP_OK) {
+					
 					InputStream inputstream = connection.getInputStream();
 					Reader reader = new InputStreamReader(inputstream);
 					int contetntlength = connection.getContentLength();
@@ -125,6 +146,7 @@ public class PlacesActivity extends Activity {
 					String ReasponseData = new String(charArray);
 
 					jsonresponse = new JSONObject(ReasponseData);
+					
 					JSONArray jsonSearchs = jsonresponse.getJSONArray("results");
 					for(int i=0;i<jsonSearchs.length();i++)
 					{
@@ -149,7 +171,13 @@ public class PlacesActivity extends Activity {
 			} catch (Exception e) {
 				Log.e(TAG, "Exception caught: ", e);
 			}
-			return null;
+			return jsonresponse;
+		}
+		
+		@Override
+		protected void onPostExecute(JSONObject result) {
+			super.onPostExecute(result);
+			
 		}
 
 	}
